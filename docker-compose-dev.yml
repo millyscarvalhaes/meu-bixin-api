@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+
+  api:
+    container_name: "api"
+    build:
+      context: ./
+      dockerfile: Dockerfile-dev
+    environment:
+      PROFILE: "dev"
+      JVM_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m"
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    depends_on:
+      - postgres
+    networks:
+      - container
+
+  pgadmin4:
+    container_name: "pgadmin4"
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - "9090:80"
+    depends_on:
+      - postgres
+    networks:
+      - container
+
+  postgres:
+    container_name: "postgres"
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=spring_security
+    networks:
+      - container
+
+networks:
+  container:
+    driver: bridge

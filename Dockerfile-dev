@@ -1,0 +1,25 @@
+FROM amazoncorretto:11
+
+# recive arguments from terminal or docker-compose
+ARG PROFILE
+ARG JVM_OPTS
+
+# put those ARG inside docker image
+ENV PROFILE=${PROFILE}
+ENV JVM_OPTS=${JVM_OPTS}
+
+
+# mkdir /opt/app
+RUN mkdir /opt/app
+
+# cd /opt/app
+WORKDIR /opt/app
+
+# cp target/ /opt/app/app.jar
+COPY target/api-*.jar /opt/app/app.jar
+
+EXPOSE 8080
+EXPOSE 5005
+
+# java -jar /opt/app/app.jar
+CMD java ${JVM_OPTS} -jar app.jar --spring.profiles.active=${PROFILE}
