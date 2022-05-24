@@ -3,10 +3,13 @@ package com.meubixin.api.security.filter;
 import com.meubixin.api.security.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
@@ -21,10 +24,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
-
-
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
