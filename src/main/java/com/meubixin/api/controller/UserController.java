@@ -2,9 +2,8 @@ package com.meubixin.api.controller;
 
 import com.meubixin.api.entity.User;
 import com.meubixin.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +20,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping
+    @PostMapping
     public User getUserDetails(Principal user){
         return Optional.ofNullable(userRepository.findByEmail(user.getName()))
                 .map( optional -> optional.get())
