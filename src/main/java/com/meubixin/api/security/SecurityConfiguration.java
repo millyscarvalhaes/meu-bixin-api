@@ -6,14 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 @Configuration
@@ -65,6 +68,11 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
 
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
