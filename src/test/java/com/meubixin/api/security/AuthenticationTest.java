@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -24,7 +25,7 @@ public class AuthenticationTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Should not allot access to unauthenticated user")
+    @DisplayName("Should not allow access to unauthenticated user")
     void shouldNotAllowAccessToUnauthenticatedUser() throws Exception{
 
         // when - action
@@ -50,7 +51,10 @@ public class AuthenticationTest {
         );
 
         // then - verify
-        response.andExpect(status().isOk());
+        response
+            .andExpect(status().isOk())
+            .andExpect(header().exists("Authorization"))
+                .andExpect(content().json("{\"id\":2 ,\"email\":\"admin@email.com\",\"enabled\":true,\"created_at\":\"2022-05-23T00:00:00\",\"updated_at\":\"2022-05-23T00:00:00\"}"));
     }
 
 }
